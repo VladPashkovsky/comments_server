@@ -1,10 +1,10 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express')
+const cors = require('cors')
 require('dotenv').config()
 
 const PORT = process.env.PORT || 8000
 
-const app = express();
+const app = express()
 
 app.use(cors({
   credentials: true,
@@ -24,8 +24,8 @@ app.use(cors({
 }))
 
 app.get('/', (req, res) => {
-  res.send('Hello SERVER Comments');
-});
+  res.send('Hello SERVER Comments')
+})
 
 const start = async (req, res) => {
   try {

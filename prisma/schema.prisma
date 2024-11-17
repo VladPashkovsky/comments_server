@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  name           String    @unique
+  password       String
+  image          String?
+  createdComment Comment[]
+  Token          Token[]
+
+  @@unique([id, name])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String
+  userId    String
+  userName  String
+  user      User     @relation(fields: [userId, userName], references: [id, name])
+  createdAt DateTime @default(now())
+}
+
+model Token {
+  userId       String @id
+  refreshToken String @unique
+  user         User?  @relation(fields: [userId], references: [id])
+}

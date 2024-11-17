@@ -10,9 +10,11 @@
   "private": true,
   "devDependencies": {
     "nodemon": "^3.1.7",
-    "prettier": "3.3.3"
+    "prettier": "3.3.3",
+    "prisma": "^5.22.0"
   },
   "dependencies": {
+    "@prisma/client": "^5.22.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1"
