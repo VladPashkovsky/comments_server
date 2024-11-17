@@ -1,35 +1,43 @@
 const express = require('express')
+const cookieParser = require('cookie-parser')
+const logger = require('morgan')
+const { Client } = require('pg')
 const cors = require('cors')
 require('dotenv').config()
 
 const PORT = process.env.PORT || 8000
 
+const client = new Client({
+  user: process.env.POSTGRESQL_USER,
+  host: process.env.POSTGRESQL_HOST,
+  database: process.env.POSTGRESQL_DBNAME,
+  password: process.env.POSTGRESQL_PASSWORD,
+  port: process.env.POSTGRESQL_PORT,
+})
+
 const app = express()
 
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
 app.use(cors({
   credentials: true,
   origin: [
     process.env.BASE_URL,
     process.env.CLIENT_URL,
     process.env.CLIENT_URL_PREVIEW,
-    process.env.CLIENT_LOCALHOST,
-    process.env.DATABASE_URL,
-    process.env.WD_HTTP,
-    process.env.WD_HTTPS,
-    process.env.WD_HTTP_PORT,
-    process.env.WD_HTTPS_PORT,
-    process.env.VITE_SERVER_ONE,
-    process.env.VITE_SERVER_TWO,
+    process.env.COMMENTS_URL,
   ],
 }))
 
-app.get('/', (req, res) => {
-  res.send('Hello SERVER Comments')
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello SERVER Comments')
+// })
 
 const start = async (req, res) => {
   try {
-    // await client.connect()
+    await client.connect()
     app.listen(PORT, () => {
       console.log(`App listening on port ${PORT}`)
     })
