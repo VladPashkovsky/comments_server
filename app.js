@@ -2,8 +2,8 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const { Client } = require('pg')
-const errorMiddleware = require('./middlewares/error-middleware')
 const cors = require('cors')
+const errorMiddleware = require('./middlewares/error-middleware')
 require('dotenv').config()
 
 const PORT = process.env.PORT || 8000
@@ -15,6 +15,9 @@ const client = new Client({
   password: process.env.POSTGRESQL_PASSWORD,
   port: process.env.POSTGRESQL_PORT,
 })
+
+const usersRouter = require('./routes/users')
+const commentsRouter = require('./routes/comments')
 
 const app = express()
 
@@ -33,10 +36,11 @@ app.use(
     ],
   })
 )
-app.use('/api')
+app.use('/api/users', usersRouter)
+app.use('/api/comments', commentsRouter)
 app.use(errorMiddleware)
 
-// app.get('/', (req, res) => {
+// app.get('/api', (req, res) => {
 //   res.send('Hello SERVER Comments')
 // })
 
