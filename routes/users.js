@@ -10,6 +10,7 @@ router.post(
   userController.register
 )
 router.post('/login', userController.login)
+router.get('/:id', userController.getUserById)
 router.get('/current', userController.current)
 router.get('/refresh', userController.refresh)
 router.get('/logout', userController.logout)

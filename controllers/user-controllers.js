@@ -31,9 +31,22 @@ class UserController {
 
       const userData = await userService.signIn(name, password)
       // res.header('Access-Control-Allow-Private-Network', [true])
-      res.cookie('refreshToken', userData.refreshToken,
-        { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, secure: true })
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+      })
       return res.json(userData)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async getUserById(req, res, next) {
+    const { id } = req.params
+    try {
+      const user = await userService.getUserById(id)
+      return res.json(user)
     } catch (e) {
       next(e)
     }
@@ -67,7 +80,7 @@ class UserController {
       const { refreshToken } = req.cookies
       const token = await userService.exit(refreshToken)
       res.clearCookie('refreshToken')
-      return res.status(200).json({})
+      return res.json(token)
     } catch (e) {
       next(e)
     }

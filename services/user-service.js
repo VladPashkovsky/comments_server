@@ -55,6 +55,15 @@ class UserService {
 
   //==============================================================================================
 
+  async getUserById(id) {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    })
+    return user
+  }
+
+  //==============================================================================================
+
   async refresh(refreshToken) {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError()
