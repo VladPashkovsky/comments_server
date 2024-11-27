@@ -6,19 +6,21 @@ const tokenService = require('./token-service')
 const UserDto = require('../dto/user-dto')
 
 class UserService {
+
   async signUp(name, password) {
-    const user = await prisma.user.findFirst({
+    const registeredUserByName = await prisma.user.findFirst({
       where: { name },
     })
 
+    if (registeredUserByName) {
+      throw ApiError.RegisterWrongName()
+    }
+
     const hashedPassword = await bcrypt.hash(password, 3)
 
-    !user && (await prisma.user.create({ data: { name, password: hashedPassword } }))
-
-    const isPassEquals = await bcrypt.compare(password, user.password)
-    if (!isPassEquals) {
-      throw ApiError.LoginWrongPassword()
-    }
+    const user = await prisma.user.create({
+      data: { name,  password: hashedPassword },
+    })
 
     const userDto = new UserDto(user)
     const tokens = tokenService.generateTokens({ ...userDto })
@@ -30,6 +32,7 @@ class UserService {
   //==============================================================================================
 
   async signIn(name, password) {
+
     const user = await prisma.user.findFirst({
       where: { name },
     })

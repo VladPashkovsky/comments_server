@@ -40,9 +40,9 @@ app.use('/api/users', usersRouter)
 app.use('/api/comments', commentsRouter)
 app.use(errorMiddleware)
 
-// app.get('/api', (req, res) => {
-//   res.send('Hello SERVER Comments')
-// })
+app.get('/api', (req, res) => {
+  res.send('Hello SERVER Comments')
+})
 
 const start = async (req, res) => {
   try {
