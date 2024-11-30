@@ -37,6 +37,10 @@ class UserService {
       where: { name },
     })
 
+    // const user = await prisma.user.findUnique({
+    //   where: { name },
+    // })
+
     if (!user) {
       throw ApiError.LoginWrongName()
     }

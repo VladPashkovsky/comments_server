@@ -30,7 +30,7 @@ class UserController {
       const { name, password } = req.body
 
       const userData = await userService.signIn(name, password)
-      // res.header('Access-Control-Allow-Private-Network', [true])
+
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
