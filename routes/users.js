@@ -5,8 +5,8 @@ const { body } = require('express-validator')
 
 router.post(
   '/register',
-  body('name').isLength({ min: 3, max: 28 }).trim(),
-  body('password').isLength({ min: 3, max: 28 }),
+  body('name').isLength({ min: 3, max: 22 }).trim(),
+  body('password').isLength({ min: 3, max: 22 }),
   userController.register
 )
 router.post('/login', userController.login)
