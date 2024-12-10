@@ -7,7 +7,7 @@ const UserDto = require('../dto/user-dto')
 
 class UserService {
 
-  async signUp(name, password) {
+  async signUp(name, password, image) {
     const registeredUserByName = await prisma.user.findFirst({
       where: { name },
     })
@@ -19,7 +19,7 @@ class UserService {
     const hashedPassword = await bcrypt.hash(password, 3)
 
     const user = await prisma.user.create({
-      data: { name,  password: hashedPassword },
+      data: { name,  password: hashedPassword, image },
     })
 
     const userDto = new UserDto(user)
