@@ -87,6 +87,18 @@ class UserController {
     }
   }
 
+  async uploadAvatar(req, res, next) {
+    try {
+      const file = req.file;
+      const id = req.user.id;
+      const imageUrl = await userService.uploadAvatar(id, file);
+      res.json({ imageUrl });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+
   async getUserById(req, res, next) {
     const { id } = req.params
     try {

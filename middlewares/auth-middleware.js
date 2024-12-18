@@ -27,6 +27,7 @@ module.exports = async function (req, res, next) {
     req.user = user
     next()
   } catch (e) {
-    return ApiError.UnauthorizedError()
+    // return ApiError.UnauthorizedError()
+    return next(ApiError.UnauthorizedError());
   }
 }
