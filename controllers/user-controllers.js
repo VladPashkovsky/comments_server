@@ -9,15 +9,15 @@ const path = require('path');
 // import { S3Client, Tag } from '@aws-sdk/client-s3'
 // import { Upload } from '@aws-sdk/lib-storage'
 
-const s3Client = new S3Client({
-  forcePathStyle: true,
-  endpoint: process.env.S3_ENDPOINT,
-  region: process.env.S3_REGION,
-  credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  },
-})
+// const s3Client = new S3Client({
+//   forcePathStyle: true,
+//   endpoint: process.env.S3_ENDPOINT,
+//   region: process.env.S3_REGION,
+//   credentials: {
+//     accessKeyId: process.env.S3_ACCESS_KEY_ID,
+//     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+//   },
+// })
 
 class UserController {
 
@@ -88,11 +88,16 @@ class UserController {
   }
 
   async uploadAvatar(req, res, next) {
+    console.log(req.file);
     try {
       const file = req.file;
-      const id = req.user.id;
+      const id = req.body.id;
+      // await userService.uploadAvatar(id, file);
       const imageUrl = await userService.uploadAvatar(id, file);
+      // const imageUrl = await fileStorage.uploadImage(file, 'avatar');
+      // await userService.uploadAvatar(id, imageUrl);
       res.json({ imageUrl });
+      // res.json({ message: 'Avatar uploaded successfully' });
     } catch (e) {
       next(e);
     }

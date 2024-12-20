@@ -5,7 +5,8 @@ const { body } = require('express-validator')
 const authMiddleware = require('../middlewares/auth-middleware')
 const multer = require('multer');
 
-const upload = multer({ dest: './uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
+// const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 router.post(
   '/register',
@@ -14,8 +15,8 @@ router.post(
   userController.register
 )
 router.post('/login', userController.login)
-// router.post('/upload-avatar', upload.single('image'), userController.uploadAvatar)
-router.post('/upload-avatar', userController.uploadAvatar)
+router.post('/upload-avatar', upload.single('image'), userController.uploadAvatar);
+// router.post('/upload-avatar', userController.uploadAvatar)
 router.get('/:id', userController.getUserById)
 router.get('/current', userController.current)
 router.get('/refresh', userController.refresh)

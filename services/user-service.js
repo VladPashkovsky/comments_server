@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken')
 const tokenService = require('./token-service')
 const UserDto = require('../dto/user-dto')
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
-const { uploadImage } = require('../services/file-storage')
-
+const fileStorage = require('../services/file-storage');
 
 class UserService {
 
@@ -63,10 +62,11 @@ class UserService {
   //==============================================================================================
 
   async uploadAvatar(id, file) {
-    const imageUrl = await uploadImage(file, 'avatar')
+    // const imageUrl = await uploadImage(file, 'avatar')
+    const imageUrl = await fileStorage.uploadImage(file, 'avatar');
     await prisma.user.update({
       where: { id },
-      data: { image: imageUrl },
+      data: { image: imageUrl.path },
     });
     return imageUrl;
   }
