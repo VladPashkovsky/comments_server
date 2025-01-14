@@ -88,16 +88,11 @@ class UserController {
   }
 
   async uploadAvatar(req, res, next) {
-    console.log(req.file);
     try {
       const file = req.file;
       const id = req.body.id;
-      // await userService.uploadAvatar(id, file);
       const imageUrl = await userService.uploadAvatar(id, file);
-      // const imageUrl = await fileStorage.uploadImage(file, 'avatar');
-      // await userService.uploadAvatar(id, imageUrl);
-      res.json({ imageUrl });
-      // res.json({ message: 'Avatar uploaded successfully' });
+      return res.json(imageUrl);
     } catch (e) {
       next(e);
     }
