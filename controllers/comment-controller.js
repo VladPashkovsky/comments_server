@@ -4,12 +4,49 @@ const ApiError = require('../exeptions/api-errors')
 class CommentController {
   async getAllComments(req, res, next) {
     try {
-      const comments = await prisma.comment.findMany()
-      res.status(200).json(comments)
+      const { userId, _page, _per_page } = req.query;
+      const page = parseInt(_page) || 1;
+      const perPage = parseInt(_per_page) || 5;
+      const skip = (page - 1) * perPage;
+
+      const where = userId ? { userId: userId } : {};
+
+      const [comments, totalCount] = await Promise.all([
+        prisma.comment.findMany({
+          where,
+          skip,
+          take: perPage,
+          orderBy: { createdAt: 'desc' },
+        }),
+        prisma.comment.count({ where }),
+      ]);
+
+      const totalPages = Math.ceil(totalCount / perPage);
+      const nextPage = page < totalPages ? page + 1 : null;
+
+      res.status(200).json({
+        data: comments,
+        meta: {
+          totalCount,
+          pageCount: totalPages,
+          currentPage: page,
+          perPage,
+        },
+        next: nextPage,
+      });
     } catch (e) {
-      return next(ApiError.BadRequest('Failed to get list:', e.array()))
+      return next(ApiError.BadRequest('Failed to get list:', e.message));
     }
   }
+
+  // async getAllComments(req, res, next) {
+  //   try {
+  //     const comments = await prisma.comment.findMany()
+  //     res.status(200).json(comments)
+  //   } catch (e) {
+  //     return next(ApiError.BadRequest('Failed to get list:', e.array()))
+  //   }
+  // }
 
   async getCommentById(req, res, next) {
     const { id } = req.params
