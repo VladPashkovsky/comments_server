@@ -6,7 +6,7 @@ const cors = require('cors')
 const errorMiddleware = require('./middlewares/error-middleware')
 require('dotenv').config()
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8001
 
 const client = new Client({
   user: process.env.POSTGRESQL_USER,

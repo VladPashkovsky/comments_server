@@ -1,0 +1,66 @@
+services:
+
+  comments-server:
+    build:
+      context: ./
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: "512M"
+        reservations:
+          cpus: "0.25"
+          memory: "128M"
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRESQL_HOST : ${POSTGRESQL_HOST}
+      POSTGRESQL_PORT : ${POSTGRESQL_PORT}
+      POSTGRESQL_USER : ${POSTGRESQL_USER}
+      POSTGRESQL_PASSWORD : ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_DBNAME : ${POSTGRESQL_DBNAME}
+    networks:
+      - comments-network
+
+
+  comments-client:
+    build:
+      context: ../comments_client
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: "512M"
+        reservations:
+          cpus: "0.25"
+          memory: "128M"
+    restart: unless-stopped
+    ports:
+      - "5174:4173"
+    environment:
+      REACT_APP_API_URL: http://localhost:8001/api
+    depends_on:
+      - comments-server
+    networks:
+       - comments-network
+
+
+networks:
+  comments-network:
+    driver: bridge
+
+
+
+
+
+
+
+
+
+
+
+
