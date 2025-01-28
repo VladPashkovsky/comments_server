@@ -1,26 +1,9 @@
 const { validationResult } = require('express-validator')
 const ApiError = require('../exeptions/api-errors')
 const userService = require('../services/user-service')
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
-const { convert } = require('convert-svg-to-png');
-const { createConverter } = require('convert-svg-to-png');
-const fs = require('fs');
-const path = require('path');
-// import { S3Client, Tag } from '@aws-sdk/client-s3'
-// import { Upload } from '@aws-sdk/lib-storage'
 
-// const s3Client = new S3Client({
-//   forcePathStyle: true,
-//   endpoint: process.env.S3_ENDPOINT,
-//   region: process.env.S3_REGION,
-//   credentials: {
-//     accessKeyId: process.env.S3_ACCESS_KEY_ID,
-//     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-//   },
-// })
 
 class UserController {
-
   async register(req, res, next) {
     try {
       const errors = validationResult(req)
@@ -89,15 +72,14 @@ class UserController {
 
   async uploadAvatar(req, res, next) {
     try {
-      const file = req.file;
-      const id = req.body.id;
-      const imageUrl = await userService.uploadAvatar(id, file);
-      return res.json(imageUrl);
+      const file = req.file
+      const id = req.body.id
+      const imageUrl = await userService.uploadAvatar(id, file)
+      return res.json(imageUrl)
     } catch (e) {
-      next(e);
+      next(e)
     }
   }
-
 
   async getUserById(req, res, next) {
     const { id } = req.params

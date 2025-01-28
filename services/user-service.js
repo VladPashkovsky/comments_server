@@ -1,10 +1,8 @@
 const { prisma } = require('../prisma/prisma-client')
 const bcrypt = require('bcrypt')
 const ApiError = require('../exeptions/api-errors')
-const jwt = require('jsonwebtoken')
 const tokenService = require('./token-service')
 const UserDto = require('../dto/user-dto')
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
 const fileStorage = require('../services/file-storage');
 
 class UserService {

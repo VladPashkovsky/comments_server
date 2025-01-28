@@ -3,18 +3,9 @@ services:
   comments-server:
     build:
       context: ./
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: "512M"
-        reservations:
-          cpus: "0.25"
-          memory: "128M"
     restart: unless-stopped
     ports:
       - "8001:8001"
-      - "5432:5432"
     env_file:
       - .env
     environment:
@@ -26,18 +17,9 @@ services:
     networks:
       - comments-network
 
-
   comments-client:
     build:
-      context: ../comments_client
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: "512M"
-        reservations:
-          cpus: "0.25"
-          memory: "128M"
+      context: ../comments
     restart: unless-stopped
     ports:
       - "5174:4173"
