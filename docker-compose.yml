@@ -19,12 +19,12 @@ services:
 
   comments-client:
     build:
-      context: ../comments
+      context: ../comments_client
     restart: unless-stopped
     ports:
       - "5174:4173"
     environment:
-      REACT_APP_API_URL: http://localhost:8001/api
+      REACT_APP_API_URL: https://comments.bunch-of-stuff.ru/api
     depends_on:
       - comments-server
     networks:
